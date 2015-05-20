@@ -2,6 +2,15 @@ require 'fileutils'
 require 'system_commands'
 
 FactoryGirl.define do
+
+  factory :course_template do
+    sequence(:name) { |n| "template#{n}" }
+    sequence(:title) { |n| "template title#{n}" }
+    sequence(:description) { |n| "course descriptiong#{n}" }
+    sequence(:material_url) { |n| "http://www.material#{n}.com" }
+    sequence(:source_url) { |n| "git@example#{n}.com" }
+  end
+
   factory :user do
     sequence(:login) { |n| "user#{n}" }
     sequence(:password) { |n| "userpass#{n}" }
@@ -110,4 +119,19 @@ FactoryGirl.define do
   factory :test_scanner_cache_entry do
     course
   end
+
+  factory :organization do
+    sequence(:name) { |n| "organization#{n}" }
+    sequence(:information) { |n| "information#{n}" }
+    sequence(:slug) { |n| "organization#{n}" }
+    acceptance_pending true
+  end
+
+  factory :accepted_organization, class: Organization do
+    sequence(:name) { |n| "organization#{n}" }
+    sequence(:information) { |n| "information#{n}" }
+    sequence(:slug) { |n| "organization#{n}" }
+    acceptance_pending false
+  end
+
 end
