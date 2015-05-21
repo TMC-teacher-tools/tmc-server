@@ -12,7 +12,7 @@ TmcServer::Application.routes.draw do
     resources :teachers, only: [:index, :new, :create, :destroy]
   end
 
-  resources :course_templates
+  resources :course_templates, except: :show
 
   resources :sessions, only: [:new, :create, :destroy]
 
