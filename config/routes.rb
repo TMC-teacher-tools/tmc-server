@@ -1,4 +1,15 @@
 TmcServer::Application.routes.draw do
+  resources :organizations, path: 'org' do
+    member do
+      post 'accept'
+      post 'decline'
+    end
+
+    collection do
+      get 'list_requests'
+    end
+  end
+
   resources :course_templates
 
   resources :sessions, only: [:new, :create, :destroy]
