@@ -77,6 +77,11 @@ class Ability
       can :manage_teachers, Organization do |o|
         o.teacher?(user)
       end
+
+      cannot :teach, Organization
+      can :teach, Organization do |o|
+        o.teacher?(user)
+      end
     end
   end
 end
