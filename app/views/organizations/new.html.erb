@@ -1,26 +1,26 @@
 <h1>Request a new organization</h1>
 
-<%= form_for(@organization) do |f| %>
+<%= form_for @organization do |f| %>
   <%= render 'shared/error_messages', target: @organization %>
 
-  <div class="field">
-    <%= f.label :name %><br>
+  <div>
+    <%= f.label :name %>
     <%= f.text_field :name %>
   </div>
-  <div class="field">
-    <%= f.label :information %><br>
+  <div>
+    <%= f.label :information %>
     <%= f.text_area :information %>
   </div>
-  <div class="field">
+
     <%= f.label :slug %>
     Preview:
     <span id="organization-id-preview-url">
        <%= organizations_url %>/<span id="organization-id-preview-slug"></span>
     </span>
     <br/>
-    <%= f.text_field :slug, onkeyup: 'Organizations.updateSlugPreview(this.value)' %>
-  </div>
-  <div class="actions">
+    <%= f.text_field :slug, onkeyup: 'Organizations.updateSlugPreview(this.value)', class: 'form-control' %>
+
+  <div>
     <%= f.submit 'Request organization' %>
   </div>
 <% end %>

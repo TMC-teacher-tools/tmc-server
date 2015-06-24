@@ -4,6 +4,7 @@ source 'https://rubygems.org'
 
 gem 'rails', '~> 4.1.0'
 
+gem 'sass-rails'
 gem 'rake'
 gem 'google-spreadsheet-ruby'
 gem 'pg', '~> 0.17.0'
