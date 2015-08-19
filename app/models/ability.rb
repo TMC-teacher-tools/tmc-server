@@ -257,6 +257,11 @@ class Ability
       can :view_participant_list, Organization do |o|
         can?(:teach, o)
       end
+
+      cannot :enroll_in, Course
+      can :enroll_in, Course do |c|
+        c.enrollable_by?(user)
+      end
     end
   end
 end

@@ -19,6 +19,9 @@
   <%= bs_labeled_field("External scoreboard URL", external_scoreboard_url_help + f.text_field(:external_scoreboard_url)) %>
   <%= bs_labeled_field("Course name", f.text_field(:name, disabled: true)) %>
   <%= bs_labeled_field("Formal name", f.text_field(:formal_name)) %>
+  <%= bs_labeled_field("Enrollment key", f.text_field(:enrollment_key)) %>
+  <%= bs_labeled_field("Enrollment begins at", f.text_field(:raw_enrollment_begins_at, class: 'datetime-picker-enrollment', placeholder: 'd.m.y H:M')) %>
+  <%= bs_labeled_field("Enrollment ends at", f.text_field(:raw_enrollment_ends_at, class: 'datetime-picker-enrollment', placeholder: 'd.m.y H:M')) %>
   <%= bs_labeled_field("Course status", f.select(:status, options_for_select(Course.statuses.collect { |s| [s[0].humanize, s[0]] }, selected: @course.status)))%>
   <%= bs_labeled_field("Locked exercise points visible?", f.check_box(:locked_exercise_points_visible), type: :boolean) %>
   <%= bs_labeled_field("Certificate downloadable?", f.check_box(:certificate_downloadable), type: :boolean) %>

@@ -119,6 +119,13 @@ $(document).ready(function() {
      * Edit course parameters
      */
 
+    $(".datetime-picker-enrollment").datetimepicker({
+        dayOfWeekStart: 1,
+        validateOnBlur: false,
+        allowBlank: true,
+        format: 'd.m.Y H:i'
+    });
+
     var toggle_certificate_unlock_conditions = function() {
         var check = this.checked;
         $("#certificate-unlock-spec").css('display', check ? '' : 'none');

@@ -32,6 +32,8 @@ class Course < ActiveRecord::Base
   #          }
   validate :check_external_scoreboard_url
   validate :check_certificate_unlock_spec
+  validate :check_enrollment_begins_at_error
+  validate :check_enrollment_ends_at_error
 
   has_many :exercises, dependent: :delete_all
   has_many :submissions, dependent: :delete_all
@@ -120,6 +122,19 @@ class Course < ActiveRecord::Base
     user.teacher?(organization) ||
     user.assistant?(self) ||
     !hidden?
+  end
+
+  def enrollable_by?(user)
+    visible_to?(user) &&
+    !restricted? &&
+    enrollment_open? &&
+    !user.enrolled_in?(self)
+  end
+
+  def enrollment_open?
+    Time.now.between?(
+      enrollment_begins_at || 1.year.ago,
+      enrollment_ends_at || 1.year.from_now)
   end
 
   # This could eventually be made a hstore
@@ -409,6 +424,40 @@ class Course < ActiveRecord::Base
     self.certificate_unlock_spec = json_array
   end
 
+  def raw_enrollment_begins_at
+    enrollment_begins_at.strftime('%-d.%-m.%Y %H:%M') if enrollment_begins_at
+  end
+
+  def raw_enrollment_begins_at=(input)
+    if input.blank?
+      self.enrollment_begins_at = nil
+      return
+    end
+
+    if DateAndTimeUtils.looks_like_date_or_time(input)
+      self.enrollment_begins_at = DateAndTimeUtils.parse_date_or_time(input)
+    else
+      @enrollment_begins_at_error = true
+    end
+  end
+
+  def raw_enrollment_ends_at
+    enrollment_ends_at.strftime('%-d.%-m.%Y %H:%M') if enrollment_ends_at
+  end
+
+  def raw_enrollment_ends_at=(input)
+    if input.blank?
+      self.enrollment_ends_at = nil
+      return
+    end
+
+    if DateAndTimeUtils.looks_like_date_or_time(input)
+      self.enrollment_ends_at = DateAndTimeUtils.parse_date_or_time(input)
+    else
+      @enrollment_ends_at_error = true
+    end
+  end
+
   private
 
   def set_cache_version
@@ -465,5 +514,13 @@ class Course < ActiveRecord::Base
     rescue => e
       errors.add(:certificate_unlock_spec, e.message)
     end
+  end
+
+  def check_enrollment_begins_at_error
+    errors.add(:raw_enrollment_begins_at, 'is invalid') if @enrollment_begins_at_error
+  end
+
+  def check_enrollment_ends_at_error
+    errors.add(:raw_enrollment_ends_at, 'is invalid') if @enrollment_ends_at_error
   end
 end
