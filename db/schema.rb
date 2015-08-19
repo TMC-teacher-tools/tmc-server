@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150817095112) do
+ActiveRecord::Schema.define(version: 20150818112109) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -112,6 +112,15 @@ ActiveRecord::Schema.define(version: 20150817095112) do
   end
 
   add_index "courses", ["organization_id"], name: "index_courses_on_organization_id", using: :btree
+
+  create_table "enrollments", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "course_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "enrollments", ["user_id", "course_id"], name: "index_enrollments_on_user_id_and_course_id", unique: true, using: :btree
 
   create_table "exercises", force: true do |t|
     t.string   "name"
@@ -349,6 +358,9 @@ ActiveRecord::Schema.define(version: 20150817095112) do
   add_foreign_key "awarded_points", "courses", :name => "awarded_points_course_id_fk", :dependent => :delete
   add_foreign_key "awarded_points", "submissions", :name => "awarded_points_submission_id_fk", :dependent => :nullify
   add_foreign_key "awarded_points", "users", :name => "awarded_points_user_id_fk", :dependent => :delete
+
+  add_foreign_key "enrollments", "courses", :name => "enrollments_course_id_fk", :dependent => :delete
+  add_foreign_key "enrollments", "users", :name => "enrollments_user_id_fk", :dependent => :delete
 
   add_foreign_key "exercises", "courses", :name => "exercises_course_id_fk", :dependent => :delete
 

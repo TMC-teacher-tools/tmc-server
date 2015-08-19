@@ -46,6 +46,8 @@ class Course < ActiveRecord::Base
   has_many :certificates
   has_many :assistantships, dependent: :destroy
   has_many :assistants, through: :assistantships, source: :user
+  has_many :enrollments
+  has_many :students, through: :enrollments, source: :user
 
   belongs_to :course_template
   belongs_to :organization
