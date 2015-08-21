@@ -78,8 +78,8 @@ class Course < ActiveRecord::Base
       .where(organization_id: organization.id)
   end
   scope :participated_courses, ->(user, organization) do
-    joins(:awarded_points)
-      .where(awarded_points: { user_id: user.id })
+    joins(:enrollments)
+      .where(enrollments: { user_id: user.id })
       .where(organization_id: organization.id)
       .group('courses.id')
   end
